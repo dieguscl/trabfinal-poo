@@ -21,7 +21,12 @@ public class Identificacao {
         
         @Override
         public String toString(){
-            return String.format("nome: %s\nempresa: %s", nome, empresa);
+            if (!empresa.equals("")){
+               return String.format("%s\n%s", nome, empresa); 
+            }
+            else{
+                return nome;
+            }
         }
     
 }

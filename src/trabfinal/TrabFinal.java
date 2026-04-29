@@ -17,15 +17,27 @@ public class TrabFinal {
         // TODO code application logic here
         Identificacao pessoa1 = new Identificacao("João Silva", "ACME, Inc");
         
-        System.out.println(pessoa1.toString());
+        Identificacao pessoa2 = new Identificacao("Joana Fontes","");
+        
+        // System.out.println(pessoa1.toString());
         
         EntradaContacto cont1 = new EntradaContacto(TipoContacto.MAIL, "joao.silva@acme.com");
         
-        System.out.println(cont1);
+        // System.out.println(cont1);
         
         EntradaContacto cont2 = new EntradaContacto(TipoContacto.TELEFONE, "913435679");
         
-        System.out.println(cont2);
+        // System.out.println(cont2);
+        
+        Contacto contTest1 = new Contacto(pessoa1, cont1);
+        System.out.println(contTest1);
+        
+        Contacto contTest2 = new Contacto(pessoa2, cont2);
+        EntradaContacto cont3 = new EntradaContacto(TipoContacto.MAIL, "fontesjoana@personal.com");
+        contTest2.addEntradaContacto(cont3);
+        System.out.println(contTest2);
+        
+       
     }
     
 }

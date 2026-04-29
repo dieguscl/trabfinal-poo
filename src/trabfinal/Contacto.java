@@ -1,0 +1,37 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package trabfinal;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author luis
+ */
+public class Contacto {
+    private final Identificacao identificacao;
+    private final ArrayList<EntradaContacto> entradas;
+    
+    public Contacto(Identificacao newIdentificacao, EntradaContacto newEntradaContacto){
+        identificacao = newIdentificacao;
+        entradas = new ArrayList<>();
+        entradas.add(newEntradaContacto);
+    };
+    
+    @Override
+    public String toString(){
+        String s = identificacao.toString();
+        for (int i = 0; i < entradas.size(); i++){
+            s += String.format("\n%s", entradas.get(i).toString()); 
+        }
+        return s;
+    }
+    
+    public void addEntradaContacto(EntradaContacto newEntradaContacto){
+        // adicionar metodo de validacao de contactos
+        entradas.add(newEntradaContacto);
+    }
+    
+
+}
