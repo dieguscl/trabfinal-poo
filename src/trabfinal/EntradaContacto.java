@@ -35,4 +35,8 @@ public class EntradaContacto {
     public String toString(){
         return String.format("%s: %s", tipo.toString(), valor);
     }
+    
+    public String getValor(){
+        return valor;
+    }
 }

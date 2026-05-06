@@ -33,5 +33,25 @@ public class Contacto {
         entradas.add(newEntradaContacto);
     }
     
+    public String procurarInformacao(String newString){
+        String s = identificacao.toString();
+        
+        boolean encontrado = false;
+        
+        for(int i = 0; i < entradas.size(); i++){
+            if(entradas.get(i).getValor().contains(newString)){
+                s += "\n" + entradas.get(i).toString();
+                encontrado = true;
+            };
+        }
+        
+        if(encontrado){
+            return s;
+        }else{
+            return "";
+        }
+        
+    }
+    
 
 }
