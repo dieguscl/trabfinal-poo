@@ -18,7 +18,7 @@ public class GestorContactos {
     
     // Metodo Listar
     public String listarContactos(){
-        String s = "********************************\n*** Listar Contactos:";
+        String s = "";
         for (int i = 0; i < listaContactos.size(); i++){
             s += String.format("\n%d - %s", i+1, listaContactos.get(i).toString()); 
         }
@@ -53,4 +53,27 @@ public class GestorContactos {
     }
     
     // Metodo Estatisticas
+    public String estatisticas(){
+        String s = "********************************\n *** Estatísticas:";
+        int nTelemovel = 0;
+        int nTelefone = 0;
+        int nEmail = 0;
+        Contacto contacto;
+        
+        for (int i = 0; i < listaContactos.size(); i++){
+            contacto = listaContactos.get(i);
+            for (int j = 0; j < contacto.getEntradas().size(); j++){
+                switch (contacto.getEntradas().get(j).getTipo()) {
+                    case TipoContacto.TELEFONE -> nTelefone +=1;
+                    case TipoContacto.TELEMOVEL -> nTelemovel +=1;
+                    case TipoContacto.MAIL -> nEmail +=1;
+                    
+                //if (contacto.getEntradas().get(j).getTipo().equals(TipoContacto.TELEFONE)){
+                    
+                }               
+            }
+        }
+        return s + String.format("\nTelemóvel: %d\nTelefone: %d\nMail: %d", nTelemovel, nTelefone, nEmail);
+    }
 }
+

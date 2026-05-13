@@ -53,5 +53,9 @@ public class Contacto {
         
     }
     
+    public ArrayList<EntradaContacto> getEntradas(){
+        return entradas;
+    }
+    
 
 }

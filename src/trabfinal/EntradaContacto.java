@@ -39,4 +39,8 @@ public class EntradaContacto {
     public String getValor(){
         return valor;
     }
+    
+    public TipoContacto getTipo(){
+        return tipo;
+    }
 }
