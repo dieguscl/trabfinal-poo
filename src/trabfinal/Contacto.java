@@ -33,6 +33,7 @@ public class Contacto {
         entradas.add(newEntradaContacto);
     }
     
+    // alterar para retornar objetos entrada
     public String procurarInformacao(String newString){
         String s = identificacao.toString();
         
@@ -55,6 +56,10 @@ public class Contacto {
     
     public ArrayList<EntradaContacto> getEntradas(){
         return entradas;
+    }
+    
+    public Identificacao getIdentificacao(){
+        return identificacao;
     }
     
 

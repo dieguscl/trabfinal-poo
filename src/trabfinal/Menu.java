@@ -70,5 +70,20 @@ public class Menu {
     
     }
     
+    // Acrescentar Contacto
+//    private void acrescentarContacto(){
+//        String nome;
+//        
+//        System.out.println("********************************\n*** Acrescentar Contactos\nIndique o nome do contacto:");
+//        
+//    }    
+    // Encontrar Contacto
+    
+    // Remover Contacto
+    
+    // Estatistica
+    
+    // Sair
+    
     
 }

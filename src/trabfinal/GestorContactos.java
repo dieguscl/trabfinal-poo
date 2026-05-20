@@ -31,6 +31,8 @@ public class GestorContactos {
         listaContactos.add(contacto);
     }
     
+    //public void alterarContacto()
+    
     // Remover Contacto
     
     public void removerContacto(int idx){
@@ -39,6 +41,7 @@ public class GestorContactos {
     }
     
     // Metodo Encontrar
+    // alterar para retornar os objetos encontrados
     public String encontrarContactos(String newString){
         String s = "********************************\n*** Encontrar Contactos:";
         String procura;
@@ -51,6 +54,41 @@ public class GestorContactos {
         }
         return s;
     }
+    
+    // alternativa
+//    public Contact encontrarContactosReturnContact(String newString){
+//        String procura;
+//        for (int i = 0; i < listaContactos.size(); i++){
+//            procura = listaContactos.get(i).procurarInformacao(newString);
+//            System.out.println(listaContactos.get(i));
+//            if(!procura.equals("")){
+//                s += String.format("\n%d - %s", i+1, procura);
+//            }
+//        }
+//        return s;
+//    }
+    
+    public Contacto encontrarContactosRepetidos(Contacto newContacto){
+        //Contacto contactoRepetido = new Contacto;
+        //int idx = -1;
+        for (int i = 0; i < listaContactos.size(); i++){
+            Contacto contacto = listaContactos.get(i);
+            if (contacto.getIdentificacao().equals(newContacto.getIdentificacao())){
+                return contacto;
+            }
+        }
+        return null;
+    }
+    
+    
+    // next step
+//    public ArrayList<Integer> encontrarInformacaoRepetida(Contacto newContacto){
+//        ArrayList<Integer> contactosInformacaoRepetida = new ArrayList<>();
+//        for (int i = 0; i < newContacto.getEntradas().size(); i++){
+//            
+//            
+//        }
+//    }
     
     // Metodo Estatisticas
     public String estatisticas(){
