@@ -28,5 +28,7 @@ public class Identificacao {
                 return nome;
             }
         }
+        
+        //fazer overide do equals
     
 }

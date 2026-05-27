@@ -34,24 +34,48 @@ public class Contacto {
     }
     
     // alterar para retornar objetos entrada
-    public String procurarInformacao(String newString){
-        String s = identificacao.toString();
-        
-        boolean encontrado = false;
-        
+//    public String procurarInformacao(String newString){
+//        String s = identificacao.toString();
+//        
+//        boolean encontrado = false;
+//        
+//        for(int i = 0; i < entradas.size(); i++){
+//            if(entradas.get(i).getValor().contains(newString)){
+//                s += "\n" + entradas.get(i).toString();
+//                encontrado = true;
+//            }
+//        }
+//        
+//        if(encontrado){
+//            return s;
+//        }else{
+//            return "";
+//        }
+//        
+//    }
+    
+    public ArrayList<EntradaContacto> procurarInformacao(EntradaContacto newEntradaContacto){
+        ArrayList<EntradaContacto> informacao = new ArrayList<>();
         for(int i = 0; i < entradas.size(); i++){
-            if(entradas.get(i).getValor().contains(newString)){
-                s += "\n" + entradas.get(i).toString();
-                encontrado = true;
-            };
+            if(entradas.get(i).equals(newEntradaContacto)){
+                informacao.add(entradas.get(i));
+            }
         }
+        return informacao;
+    }
+    
+    public boolean compararInformacao(Contacto newContacto){
+        boolean temMesmaInformacao = false;
         
-        if(encontrado){
-            return s;
-        }else{
-            return "";
+        for (int i = 0; i < newContacto.getEntradas().size(); i++){
+            for (int j = 0; j < entradas.size(); i++){
+                if (newContacto.getEntradas().get(i).getValor().equals(entradas.get(j).getValor())){
+                    temMesmaInformacao = true;
+                }
+                
+            }    
         }
-        
+        return temMesmaInformacao;
     }
     
     public ArrayList<EntradaContacto> getEntradas(){
