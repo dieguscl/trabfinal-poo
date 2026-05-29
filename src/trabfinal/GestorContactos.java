@@ -5,6 +5,7 @@
 package trabfinal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -96,25 +97,20 @@ public class GestorContactos {
     // Metodo Estatisticas
     public String estatisticas(){
         String s = "********************************\n *** Estatísticas:";
-        int nTelemovel = 0;
-        int nTelefone = 0;
-        int nEmail = 0;
-        Contacto contacto;
-        
+        HashMap<TipoContacto, Integer> contagem = new HashMap<>();
+
         for (int i = 0; i < listaContactos.size(); i++){
-            contacto = listaContactos.get(i);
+            Contacto contacto = listaContactos.get(i);
             for (int j = 0; j < contacto.getEntradas().size(); j++){
-                switch (contacto.getEntradas().get(j).getTipo()) {
-                    case TipoContacto.TELEFONE -> nTelefone +=1;
-                    case TipoContacto.TELEMOVEL -> nTelemovel +=1;
-                    case TipoContacto.MAIL -> nEmail +=1;
-                    
-                //if (contacto.getEntradas().get(j).getTipo().equals(TipoContacto.TELEFONE)){
-                    
-                }               
+                TipoContacto tipo = contacto.getEntradas().get(j).getTipo();
+                contagem.put(tipo, contagem.getOrDefault(tipo, 0) + 1);
             }
         }
-        return s + String.format("\nTelemóvel: %d\nTelefone: %d\nMail: %d", nTelemovel, nTelefone, nEmail);
+
+        return s + String.format("\nTelemóvel: %d\nTelefone: %d\nMail: %d",
+                contagem.getOrDefault(TipoContacto.TELEMOVEL, 0),
+                contagem.getOrDefault(TipoContacto.TELEFONE, 0),
+                contagem.getOrDefault(TipoContacto.MAIL, 0));
     }
 }
 

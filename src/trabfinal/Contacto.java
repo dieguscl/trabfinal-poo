@@ -85,6 +85,23 @@ public class Contacto {
     public Identificacao getIdentificacao(){
         return identificacao;
     }
-    
+
+    public boolean temInformacao(EntradaContacto entrada){
+        for (int i = 0; i < entradas.size(); i++){
+            if (entradas.get(i).getValor().equals(entrada.getValor())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void acrescentarInformacao(Contacto outro){
+        for (int i = 0; i < outro.getEntradas().size(); i++){
+            EntradaContacto entrada = outro.getEntradas().get(i);
+            if (!temInformacao(entrada)){
+                entradas.add(entrada);
+            }
+        }
+    }
 
 }
