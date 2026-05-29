@@ -4,18 +4,6 @@
  */
 package trabfinal;
 
-enum TipoContacto{ TELEFONE, TELEMOVEL, MAIL;
-    @Override
-    public String toString(){
-        return switch (this) {
-            case TELEFONE -> "Telefone";
-            case TELEMOVEL -> "Telemóvel";
-            case MAIL -> "Mail";
-            default -> "";
-        };
-    }
-}
-
 /**
  *
  * @author luis

@@ -68,7 +68,7 @@ public class Contacto {
         boolean temMesmaInformacao = false;
         
         for (int i = 0; i < newContacto.getEntradas().size(); i++){
-            for (int j = 0; j < entradas.size(); i++){
+            for (int j = 0; j < entradas.size(); j++){
                 if (newContacto.getEntradas().get(i).getValor().equals(entradas.get(j).getValor())){
                     temMesmaInformacao = true;
                 }

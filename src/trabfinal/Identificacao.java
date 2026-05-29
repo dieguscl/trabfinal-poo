@@ -29,6 +29,21 @@ public class Identificacao {
             }
         }
         
-        //fazer overide do equals
-    
+        @Override
+        public boolean equals(Object obj){
+            if (this == obj){
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()){
+                return false;
+            }
+            Identificacao other = (Identificacao) obj;
+            return nome.equals(other.nome) && empresa.equals(other.empresa);
+        }
+
+        @Override
+        public int hashCode(){
+            return java.util.Objects.hash(nome, empresa);
+        }
+
 }
