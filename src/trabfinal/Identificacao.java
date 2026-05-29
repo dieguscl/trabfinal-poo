@@ -13,10 +13,22 @@ public class Identificacao {
         private String empresa;
         
         public Identificacao(String newNome, String newEmpresa){
-            // validate(newNome);
-            nome = newNome;
-            // validade(newEmpresa);
-            empresa = newEmpresa;
+            nome = validarNome(newNome);
+            empresa = validarEmpresa(newEmpresa);
+        }
+
+        private String validarNome(String nome){
+            if (nome == null || nome.trim().equals("")){
+                throw new IllegalArgumentException("O nome é obrigatório.");
+            }
+            return nome.trim();
+        }
+
+        private String validarEmpresa(String empresa){
+            if (empresa == null){
+                return "";
+            }
+            return empresa.trim();
         }
         
         @Override
