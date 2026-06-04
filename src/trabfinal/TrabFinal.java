@@ -48,10 +48,10 @@ public class TrabFinal {
         //newGestorContactos.removerContacto(1);
         System.out.println(newGestorContactos.listarContactos());
         
-        System.out.println(contTest2.procurarInformacao("joana"));
+        //System.out.println(contTest2.procurarInformacao("joana"));
         
         
-        System.out.println(newGestorContactos.encontrarContactos("joana"));
+        //System.out.println(newGestorContactos.encontrarContactos("joana"));
         
         System.out.println(contTest1.getEntradas().toString());
         System.out.println(contTest2.getEntradas().toString());

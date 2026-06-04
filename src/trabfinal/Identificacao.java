@@ -57,5 +57,13 @@ public class Identificacao {
         public int hashCode(){
             return java.util.Objects.hash(nome, empresa);
         }
+        
+        public String getNome(){
+            return nome;
+        }
+        
+        public String getEmpresa(){
+            return empresa;
+        } 
 
 }

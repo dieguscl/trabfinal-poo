@@ -42,6 +42,8 @@ public class Menu {
                 mostrarListaContactos();
             case "2" ->
                 acrescentarContacto();
+            case "4" ->
+                encontrarContactos();
             case "5" ->
                 mostrarEstatisticas();
             case "6" -> {
@@ -180,9 +182,26 @@ public class Menu {
         System.out.println("Contacto acrescentado.");
     }
 
-    //private void removerContacto() {
-    //	}
+//    private void removerContacto() {
+//        System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
+//        String informacao = scanner.nextLine();
+//    	}
 
+    private void encontrarContactos(){
+        System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
+        String informacao = scanner.nextLine();
+        ArrayList<Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        String s = "";
+        for (Contacto contacto : contactosEncontrados) {
+            s += contacto.toString() + "\n";
+        }
+        System.out.println("Contactos com essa informação:");
+        System.out.println(s);
+        
+        menuInicial();
+    }
+    
+    
     private void mostrarEstatisticas() {
         System.out.println(gestor.estatisticas());
 

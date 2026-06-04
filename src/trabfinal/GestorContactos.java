@@ -57,17 +57,24 @@ public class GestorContactos {
 //    }
     
     // alternativa
-//    public Contact encontrarContactosReturnContact(String newString){
-//        String procura;
-//        for (int i = 0; i < listaContactos.size(); i++){
-//            procura = listaContactos.get(i).procurarInformacao(newString);
-//            System.out.println(listaContactos.get(i));
-//            if(!procura.equals("")){
-//                s += String.format("\n%d - %s", i+1, procura);
-//            }
-//        }
-//        return s;
-//    }
+    public ArrayList<Contacto> encontrarInformacao(String newString){
+        ArrayList<Contacto> contactosEncontrados = new ArrayList<>();
+        for (int i = 0; i < listaContactos.size(); i++){
+            if (listaContactos.get(i).getIdentificacao().getNome().equals(newString)){
+                contactosEncontrados.add(listaContactos.get(i));
+                continue;
+            }
+            if(listaContactos.get(i).getIdentificacao().getEmpresa().equals(newString)){
+                contactosEncontrados.add(listaContactos.get(i));
+                continue;
+            }
+            EntradaContacto entrada = new EntradaContacto(TipoContacto.TELEFONE, newString);
+            if(listaContactos.get(i).temInformacao(entrada)){
+                contactosEncontrados.add(listaContactos.get(i));
+            }
+        }
+        return contactosEncontrados;
+    }
     
     public Contacto encontrarContactosRepetidos(Contacto newContacto){
         //Contacto contactoRepetido = new Contacto;
