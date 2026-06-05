@@ -6,6 +6,8 @@ package trabfinal;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
+
 
 /**
  *
@@ -42,6 +44,8 @@ public class Menu {
                 mostrarListaContactos();
             case "2" ->
                 acrescentarContacto();
+            case "3" ->
+                removerContacto();
             case "4" ->
                 encontrarContactos();
             case "5" ->
@@ -182,18 +186,116 @@ public class Menu {
         System.out.println("Contacto acrescentado.");
     }
 
-//    private void removerContacto() {
-//        System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
-//        String informacao = scanner.nextLine();
-//    	}
+    private void removerContacto() {
+        System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
+        String informacao = scanner.nextLine();
+        HashMap<Integer, Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        String s = "";
+        if(contactosEncontrados.isEmpty()){
+            System.out.println("Informação não encontrada nos contactos");
+        }
+        else if(contactosEncontrados.size() == 1){
+            System.out.println("O contacto encontrado foi:");
+            //String s = "";
+            int indice = -1;
+            Contacto contacto = null;
+            for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
+                indice = entry.getKey();
+                contacto = entry.getValue();
+                s += indice + " - " + contacto.toString() + "\n";
+                
+            }
+            System.out.println(s);
+            
+            System.out.println("1 - Remover o contacto completo");
+            System.out.println("2 - Eliminar um tipo de contacto");
+            System.out.println("3 - Voltar");
+            System.out.println("Escolhar uma opção entre [1,3]:");
+
+            switch (scanner.nextLine().trim()) {
+                case "1" -> {
+                    gestor.removerContacto(indice);
+                    System.out.println("Contacto removido.");
+                }
+                case "2" -> {
+                    System.out.println("Indique o pretende remover:");
+                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
+                    String valor = scanner.nextLine();
+                    
+                    if(!valor.isEmpty()){
+                        TipoContacto tipo = lerTipoContacto();
+                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
+                        if(contacto.getEntradas().contains(entradaCheck)){
+                            contacto.getEntradas().remove(entradaCheck);
+                            System.out.println("Entrada removida com sucesso.");
+                        }
+                        else{
+                            System.out.println("Entrada não encontrada.");
+                        }
+                    }
+                }
+                default ->
+                    System.out.println("Contacto não introduzido.");
+            }
+        }
+        else{
+            System.out.println("Contactos com essa informação:");
+            //String s = "";
+            for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
+                s += entry.getKey() + " - " + entry.getValue().getIdentificacao().getNome() + "\n";
+            }
+            System.out.println(s);
+            System.out.println("Indique o número do contacto ou 0 para esquecer:");
+            String idx = scanner.nextLine();
+            int indice = Integer.parseInt(idx);
+            Contacto contactoSelecionado = contactosEncontrados.get(indice);
+            System.out.println("O contacto encontrado foi:");
+                
+            
+            System.out.println(indice + " - " + contactoSelecionado.toString() + "\n");
+            
+            System.out.println("1 - Remover o contacto completo");
+            System.out.println("2 - Eliminar um tipo de contacto");
+            System.out.println("3 - Voltar");
+            System.out.println("Escolhar uma opção entre [1,3]:");
+            
+            switch (scanner.nextLine().trim()) {
+                case "1" -> {
+                    gestor.removerContacto(indice);
+                    System.out.println("Contacto removido.");
+                }
+                case "2" -> {
+                    System.out.println("Indique o pretende remover:");
+                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
+                    String valor = scanner.nextLine();
+                    
+                    if(!valor.isEmpty()){
+                        TipoContacto tipo = lerTipoContacto();
+                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
+                        if(contactoSelecionado.getEntradas().contains(entradaCheck)){
+                            contactoSelecionado.getEntradas().remove(entradaCheck);
+                            System.out.println("Entrada removida com sucesso.");
+                        }
+                        else{
+                            System.out.println("Entrada não encontrada.");
+                        }
+                    }
+                }
+                default ->
+                    System.out.println("Contacto não introduzido.");
+            }
+        }
+        
+        menuInicial();
+    }
 
     private void encontrarContactos(){
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine();
-        ArrayList<Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        HashMap<Integer, Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
         String s = "";
-        for (Contacto contacto : contactosEncontrados) {
-            s += contacto.toString() + "\n";
+        for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
+            s += entry.getKey() + " - " + entry.getValue().toString() + "\n";
         }
         System.out.println("Contactos com essa informação:");
         System.out.println(s);

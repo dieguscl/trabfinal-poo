@@ -33,6 +33,10 @@ public class Contacto {
         entradas.add(newEntradaContacto);
     }
     
+    public void removerEntradaContacto(EntradaContacto newEntradaContacto){
+        entradas.remove(newEntradaContacto);
+    }
+    
     // alterar para retornar objetos entrada
 //    public String procurarInformacao(String newString){
 //        String s = identificacao.toString();

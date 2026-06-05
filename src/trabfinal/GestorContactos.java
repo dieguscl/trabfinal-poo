@@ -56,21 +56,21 @@ public class GestorContactos {
 //        return s;
 //    }
     
-    // alternativa
-    public ArrayList<Contacto> encontrarInformacao(String newString){
-        ArrayList<Contacto> contactosEncontrados = new ArrayList<>();
+    // alterar para retornar hashmap com
+    public HashMap<Integer, Contacto> encontrarInformacao(String newString){
+        HashMap<Integer, Contacto> contactosEncontrados = new HashMap<>();
         for (int i = 0; i < listaContactos.size(); i++){
             if (listaContactos.get(i).getIdentificacao().getNome().equals(newString)){
-                contactosEncontrados.add(listaContactos.get(i));
+                contactosEncontrados.put(i+1, listaContactos.get(i));
                 continue;
             }
             if(listaContactos.get(i).getIdentificacao().getEmpresa().equals(newString)){
-                contactosEncontrados.add(listaContactos.get(i));
+                contactosEncontrados.put(i+1, listaContactos.get(i));
                 continue;
             }
             EntradaContacto entrada = new EntradaContacto(TipoContacto.TELEFONE, newString);
             if(listaContactos.get(i).temInformacao(entrada)){
-                contactosEncontrados.add(listaContactos.get(i));
+                contactosEncontrados.put(i+1, listaContactos.get(i));
             }
         }
         return contactosEncontrados;

@@ -31,4 +31,16 @@ public class EntradaContacto {
     public TipoContacto getTipo(){
         return tipo;
     }
+    
+    @Override
+        public boolean equals(Object obj){
+            if (this == obj){
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()){
+                return false;
+            }
+            EntradaContacto other = (EntradaContacto) obj;
+            return tipo.equals(other.tipo) && valor.equals(other.valor);
+        }
 }
