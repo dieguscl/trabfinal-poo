@@ -17,7 +17,11 @@ public class GestorContactos {
         listaContactos = new ArrayList<>();
     };
     
-    // Metodo Listar
+    // adicionar função de importação
+    
+    // adicionar função exportação, se array de contactos no arg: parcial; se nada: base
+    
+    // Metodo Listar - Alterar para retornar Contactos
     public String listarContactos(){
         String s = "";
         for (int i = 0; i < listaContactos.size(); i++){

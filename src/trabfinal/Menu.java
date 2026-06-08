@@ -26,6 +26,7 @@ public class Menu {
         gestor = newGestor;
     }
 
+    
     public void menuInicial() {
         if (runNumber != 0) {
             System.out.println("\n-----------------");
@@ -271,8 +272,8 @@ public class Menu {
                     
                     if(!valor.isEmpty()){
                         TipoContacto tipo = lerTipoContacto();
-                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
-                        if(contactoSelecionado.getEntradas().contains(entradaCheck)){
+                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); // criar um metodo recebe entrada Check e remove a entrada
+                        if(contactoSelecionado.getEntradas().contains(entradaCheck)){ // mudar para pesquisa parcial (criar metodo para pesquisa parcial)
                             contactoSelecionado.getEntradas().remove(entradaCheck);
                             System.out.println("Entrada removida com sucesso.");
                         }
@@ -288,7 +289,8 @@ public class Menu {
         
         menuInicial();
     }
-
+    // alterar a pesquisa para match parcial
+    // alterar para mostrar apenas a entrada procurada: criar novo contact so com a entrada e usar o toString
     private void encontrarContactos(){
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine();

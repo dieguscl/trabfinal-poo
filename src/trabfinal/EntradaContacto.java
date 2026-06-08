@@ -32,6 +32,10 @@ public class EntradaContacto {
         return tipo;
     }
     
+    // comparar entrada: recebe string, retorna bool
+    // faz match parcial entre entrada e string
+    // parametro para fazer completo
+    
     @Override
         public boolean equals(Object obj){
             if (this == obj){
