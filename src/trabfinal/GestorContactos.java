@@ -22,13 +22,14 @@ public class GestorContactos {
     // adicionar função exportação, se array de contactos no arg: parcial; se nada: base
     
     // Metodo Listar - Alterar para retornar Contactos
-    public String listarContactos(){
-        String s = "";
-        for (int i = 0; i < listaContactos.size(); i++){
-            s += String.format("\n%d - %s", i+1, listaContactos.get(i).toString()); 
-        }
-        return s;
-    };
+    // Obsoleto
+//    public ArrayList<Contacto> listarContactos(){
+//        String s = "";
+//        for (int i = 0; i < listaContactos.size(); i++){
+//            s += String.format("\n%d - %s", i+1, listaContactos.get(i).toString()); 
+//        }
+//        return s;
+//    };
     
     // Metodo Acrescentar
     public void acrescentarContacto(Contacto contacto){
@@ -42,7 +43,11 @@ public class GestorContactos {
     
     public void removerContacto(int idx){
         // verificar se entre 1 e tamanho do Array
-        listaContactos.remove(idx-1);
+        listaContactos.remove(idx);
+    }
+    
+    public ArrayList<Contacto> getListaContactos(){
+        return listaContactos;
     }
     
     // Metodo Encontrar
@@ -60,21 +65,20 @@ public class GestorContactos {
 //        return s;
 //    }
     
-    public HashMap<Integer, Contacto> encontrarInformacao(String newString){
-        HashMap<Integer, Contacto> contactosEncontrados = new HashMap<>();
+    public ArrayList<Integer> encontrarInformacao(String newString){
+        ArrayList<Integer> contactosEncontrados = new ArrayList<>();
         for (int i = 0; i < listaContactos.size(); i++){
             if (listaContactos.get(i).getIdentificacao().procurarIdentificacaoParcial(newString)){
-                contactosEncontrados.put(i+1, listaContactos.get(i));
+                contactosEncontrados.add(i);
                 continue;
             }
-            //EntradaContacto entrada = new EntradaContacto(TipoContacto.TELEFONE, newString);
             ArrayList <EntradaContacto> entradasEncontradas = listaContactos.get(i).procurarInformacaoParcial(newString);
             if(!entradasEncontradas.isEmpty()){
                 Contacto newContacto = new Contacto(listaContactos.get(i).getIdentificacao(), entradasEncontradas.get(0));
                 for (int j = 1; j < entradasEncontradas.size(); j++) {
                     newContacto.addEntradaContacto(entradasEncontradas.get(j));
                 }
-                contactosEncontrados.put(i+1, newContacto);
+                contactosEncontrados.add(i);
             }
         }
         return contactosEncontrados;
@@ -93,7 +97,6 @@ public class GestorContactos {
     }
     
     
-    // next step
     public ArrayList<Contacto> encontrarInformacaoRepetidaContactos(Contacto newContacto){
         ArrayList<Contacto> listaContactosInfoRepetida = new ArrayList<>();
         

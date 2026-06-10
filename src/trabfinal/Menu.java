@@ -59,15 +59,17 @@ public class Menu {
     }
 
     private void mostrarListaContactos() {
-
-        String listaContactos = gestor.listarContactos();
         System.out.println("********************************\n*** Listar Contactos:");
-
-        if (listaContactos.equals("")) {
+        ArrayList<Contacto> listaContactos = gestor.getListaContactos();
+        if (listaContactos.isEmpty()) {
             System.out.println("\nNão há contactos!\nPrima entrer para continuar!");
             scanner.nextLine();
         } else {
-            System.out.println(listaContactos);
+            String s = "";
+            for (int i = 0; i < listaContactos.size(); i++){
+                s += String.format("\n%d - %s", i+1, listaContactos.get(i).toString());        
+                }
+            System.out.println(s);
             System.out.println("Escrever em Ficheiro (S/N)?");
 
             switch (scanner.nextLine().trim().toLowerCase()) {
@@ -186,125 +188,183 @@ public class Menu {
         gestor.acrescentarContacto(novo);
         System.out.println("Contacto acrescentado.");
     }
+    
+    private void removerContactoIndividual(int indiceEncontrado){
+        Contacto contactoEncontrado = gestor.getListaContactos().get(indiceEncontrado);
+        System.out.println("O contacto encontrado foi:");
+        String s = "";
+        s += (indiceEncontrado+1) + " - " + contactoEncontrado.toString() + "\n";    
+        System.out.println(s);
+
+        System.out.println("1 - Remover o contacto completo");
+        System.out.println("2 - Eliminar um tipo de contacto");
+        System.out.println("3 - Voltar");
+        System.out.println("Escolhar uma opção entre [1,3]:");
+
+        switch (scanner.nextLine().trim()) {
+            case "1" -> {
+                gestor.removerContacto(indiceEncontrado);
+                System.out.println("Contacto removido.");
+            }
+            case "2" -> {
+                System.out.println("Indique o pretende remover:");
+                System.out.println("Indique os dados do contacto ou vazio para terminar:");
+                String valor = scanner.nextLine();
+
+                if(!valor.isEmpty()){
+                    TipoContacto tipo = lerTipoContacto();
+                    EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
+                    if(contactoEncontrado.getEntradas().contains(entradaCheck)){
+                        contactoEncontrado.getEntradas().remove(entradaCheck);
+                        System.out.println("Entrada removida com sucesso.");
+                    }
+                    else{
+                        System.out.println("Entrada não encontrada.");
+                    }
+                }
+            }
+            default ->
+                System.out.println("Contacto não introduzido.");
+        }
+    }
 
     private void removerContacto() {
         System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine();
-        HashMap<Integer, Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
         String s = "";
-        if(contactosEncontrados.isEmpty()){
+        if(contactosEncontrados.isEmpty() || informacao.isBlank()){
             System.out.println("Informação não encontrada nos contactos");
         }
         else if(contactosEncontrados.size() == 1){
-            System.out.println("O contacto encontrado foi:");
-            //String s = "";
-            int indice = -1;
-            Contacto contacto = null;
-            for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
-                indice = entry.getKey();
-                contacto = entry.getValue();
-                s += indice + " - " + contacto.toString() + "\n";
-                
-            }
-            System.out.println(s);
             
-            System.out.println("1 - Remover o contacto completo");
-            System.out.println("2 - Eliminar um tipo de contacto");
-            System.out.println("3 - Voltar");
-            System.out.println("Escolhar uma opção entre [1,3]:");
-
-            switch (scanner.nextLine().trim()) {
-                case "1" -> {
-                    gestor.removerContacto(indice);
-                    System.out.println("Contacto removido.");
-                }
-                case "2" -> {
-                    System.out.println("Indique o pretende remover:");
-                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
-                    String valor = scanner.nextLine();
+            //String s = "";
+            int indiceEncontrado = contactosEncontrados.get(0);
+            
+            removerContactoIndividual(indiceEncontrado);
                     
-                    if(!valor.isEmpty()){
-                        TipoContacto tipo = lerTipoContacto();
-                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
-                        if(contacto.getEntradas().contains(entradaCheck)){
-                            contacto.getEntradas().remove(entradaCheck);
-                            System.out.println("Entrada removida com sucesso.");
-                        }
-                        else{
-                            System.out.println("Entrada não encontrada.");
-                        }
-                    }
-                }
-                default ->
-                    System.out.println("Contacto não introduzido.");
-            }
+//            Contacto contactoEncontrado = gestor.getListaContactos().get(indiceEncontrado);
+//            
+//            s += (indiceEncontrado+1) + " - " + contactoEncontrado.toString() + "\n";    
+//            System.out.println(s);
+//            
+//            System.out.println("1 - Remover o contacto completo");
+//            System.out.println("2 - Eliminar um tipo de contacto");
+//            System.out.println("3 - Voltar");
+//            System.out.println("Escolhar uma opção entre [1,3]:");
+//
+//            switch (scanner.nextLine().trim()) {
+//                case "1" -> {
+//                    gestor.removerContacto(indiceEncontrado);
+//                    System.out.println("Contacto removido.");
+//                }
+//                case "2" -> {
+//                    System.out.println("Indique o pretende remover:");
+//                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
+//                    String valor = scanner.nextLine();
+//                    
+//                    if(!valor.isEmpty()){
+//                        TipoContacto tipo = lerTipoContacto();
+//                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); 
+//                        if(contactoEncontrado.getEntradas().contains(entradaCheck)){
+//                            contactoEncontrado.getEntradas().remove(entradaCheck);
+//                            System.out.println("Entrada removida com sucesso.");
+//                        }
+//                        else{
+//                            System.out.println("Entrada não encontrada.");
+//                        }
+//                    }
+//                }
+//                default ->
+//                    System.out.println("Contacto não introduzido.");
+//            }
         }
         else{
             System.out.println("Contactos com essa informação:");
             //String s = "";
-            for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
-                s += entry.getKey() + " - " + entry.getValue().getIdentificacao().getNome() + "\n";
-                for (EntradaContacto entrada : entry.getValue().getEntradas()){
-                    s += entrada.toString() + "\n";
+            for (int indice : contactosEncontrados){
+                s += (indice+1) + " - " + gestor.getListaContactos().get(indice).getIdentificacao().getNome() + "\n";
+                for (EntradaContacto entrada : gestor.getListaContactos().get(indice).getEntradas()){
+                    if (entrada.procurarEntradaParcial(informacao)){
+                        s += entrada.toString() + "\n";
+                    }
                 }
             }
             System.out.println(s);
             System.out.println("Indique o número do contacto ou 0 para esquecer:");
             String idx = scanner.nextLine();
-            int indice = Integer.parseInt(idx);
-            if (indice == 0) {
+            if (idx.isBlank()) {
                 menuInicial();
                 return;
             }
-            Contacto contactoSelecionado = contactosEncontrados.get(indice);
-            System.out.println("O contacto encontrado foi:");
-                
-            
-            System.out.println(indice + " - " + contactoSelecionado.toString() + "\n");
-            
-            System.out.println("1 - Remover o contacto completo");
-            System.out.println("2 - Eliminar um tipo de contacto");
-            System.out.println("3 - Voltar");
-            System.out.println("Escolhar uma opção entre [1,3]:");
-            
-            switch (scanner.nextLine().trim()) {
-                case "1" -> {
-                    gestor.removerContacto(indice);
-                    System.out.println("Contacto removido.");
-                }
-                case "2" -> {
-                    System.out.println("Indique o pretende remover:");
-                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
-                    String valor = scanner.nextLine();
-                    
-                    if(!valor.isEmpty()){
-                        TipoContacto tipo = lerTipoContacto();
-                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); // criar um metodo recebe entrada Check e remove a entrada
-                        if(contactoSelecionado.getEntradas().contains(entradaCheck)){ // mudar para pesquisa parcial (criar metodo para pesquisa parcial)
-                            contactoSelecionado.getEntradas().remove(entradaCheck);
-                            System.out.println("Entrada removida com sucesso.");
-                        }
-                        else{
-                            System.out.println("Entrada não encontrada.");
-                        }
-                    }
-                }
-                default ->
-                    System.out.println("Contacto não introduzido.");
+            int indiceSelecionado;
+            try {
+                indiceSelecionado = Integer.parseInt(idx) - 1;
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido.");
+                menuInicial();
+                return;
             }
+            if (indiceSelecionado == -1 || !contactosEncontrados.contains(indiceSelecionado)) {
+                menuInicial();
+                return;
+            }
+            
+            removerContactoIndividual(indiceSelecionado);
+            
+//            Contacto contactoSelecionado = gestor.getListaContactos().get(indice);
+//            System.out.println("O contacto encontrado foi:");
+//                
+//            
+//            System.out.println((indice+1) + " - " + contactoSelecionado.toString() + "\n");
+//            
+//            System.out.println("1 - Remover o contacto completo");
+//            System.out.println("2 - Eliminar um tipo de contacto");
+//            System.out.println("3 - Voltar");
+//            System.out.println("Escolhar uma opção entre [1,3]:");
+//            
+//            switch (scanner.nextLine().trim()) {
+//                case "1" -> {
+//                    gestor.removerContacto(indice);
+//                    System.out.println("Contacto removido.");
+//                }
+//                case "2" -> {
+//                    System.out.println("Indique o pretende remover:");
+//                    System.out.println("Indique os dados do contacto ou vazio para terminar:");
+//                    String valor = scanner.nextLine();
+//                    
+//                    if(!valor.isEmpty()){
+//                        TipoContacto tipo = lerTipoContacto();
+//                        EntradaContacto entradaCheck = new EntradaContacto(tipo, valor); // criar um metodo recebe entrada Check e remove a entrada
+//                        if(contactoSelecionado.getEntradas().contains(entradaCheck)){ // mudar para pesquisa parcial (criar metodo para pesquisa parcial)
+//                            contactoSelecionado.getEntradas().remove(entradaCheck);
+//                            System.out.println("Entrada removida com sucesso.");
+//                        }
+//                        else{
+//                            System.out.println("Entrada não encontrada.");
+//                        }
+//                    }
+//                }
+//                default ->
+//                    System.out.println("Contacto não introduzido.");
+//            }
         }
         
         menuInicial();
     }
-    // alterar a pesquisa para match parcial
-    // alterar para mostrar apenas a entrada procurada: criar novo contact so com a entrada e usar o toString
+
     private void encontrarContactos(){
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine();
-        HashMap<Integer, Contacto> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        if (contactosEncontrados.isEmpty()){
+            System.out.println("Informação não encontrada nos contactos");
+            menuInicial();
+            return;
+        }
         String s = "";
-        for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
-            s += entry.getKey() + " - " + entry.getValue().toString() + "\n";
+        for (int indice : contactosEncontrados){
+            s += (indice+1) + " - " + gestor.getListaContactos().get(indice).toString() + "\n";
         }
         System.out.println("Contactos com essa informação:");
         System.out.println(s);

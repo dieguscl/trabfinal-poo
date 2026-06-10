@@ -37,6 +37,8 @@ public class TrabFinal {
         EntradaContacto cont4 = new EntradaContacto(TipoContacto.MAIL, "joanasfontes@newmail.pt");
         contTest2.addEntradaContacto(cont3);
         contTest2.addEntradaContacto(cont4);
+        
+        Contacto contTest3 = new Contacto(new Identificacao("Jonas Carneiro", ""), new EntradaContacto(TipoContacto.TELEMOVEL, "912334455"));
 
         System.out.println(contTest2);
         
@@ -45,9 +47,8 @@ public class TrabFinal {
         GestorContactos newGestorContactos = new GestorContactos();
         newGestorContactos.acrescentarContacto(contTest2);
         newGestorContactos.acrescentarContacto(contTest1);
+        newGestorContactos.acrescentarContacto(contTest3);
         //newGestorContactos.removerContacto(1);
-        System.out.println(newGestorContactos.listarContactos());
-        
         //System.out.println(contTest2.procurarInformacao("joana"));
         
         

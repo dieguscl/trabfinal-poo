@@ -9,8 +9,8 @@ package trabfinal;
  * @author luis
  */
 public class Identificacao {
-        private String nome;
-        private String empresa;
+        private final String nome;
+        private final String empresa;
         
         public Identificacao(String newNome, String newEmpresa){
             nome = validarNome(newNome);
