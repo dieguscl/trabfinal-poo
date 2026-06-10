@@ -244,11 +244,18 @@ public class Menu {
             //String s = "";
             for (HashMap.Entry<Integer, Contacto> entry : contactosEncontrados.entrySet()){
                 s += entry.getKey() + " - " + entry.getValue().getIdentificacao().getNome() + "\n";
+                for (EntradaContacto entrada : entry.getValue().getEntradas()){
+                    s += entrada.toString() + "\n";
+                }
             }
             System.out.println(s);
             System.out.println("Indique o número do contacto ou 0 para esquecer:");
             String idx = scanner.nextLine();
             int indice = Integer.parseInt(idx);
+            if (indice == 0) {
+                menuInicial();
+                return;
+            }
             Contacto contactoSelecionado = contactosEncontrados.get(indice);
             System.out.println("O contacto encontrado foi:");
                 

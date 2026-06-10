@@ -60,21 +60,21 @@ public class GestorContactos {
 //        return s;
 //    }
     
-    // alterar para retornar hashmap com
     public HashMap<Integer, Contacto> encontrarInformacao(String newString){
         HashMap<Integer, Contacto> contactosEncontrados = new HashMap<>();
         for (int i = 0; i < listaContactos.size(); i++){
-            if (listaContactos.get(i).getIdentificacao().getNome().equals(newString)){
+            if (listaContactos.get(i).getIdentificacao().procurarIdentificacaoParcial(newString)){
                 contactosEncontrados.put(i+1, listaContactos.get(i));
                 continue;
             }
-            if(listaContactos.get(i).getIdentificacao().getEmpresa().equals(newString)){
-                contactosEncontrados.put(i+1, listaContactos.get(i));
-                continue;
-            }
-            EntradaContacto entrada = new EntradaContacto(TipoContacto.TELEFONE, newString);
-            if(listaContactos.get(i).temInformacao(entrada)){
-                contactosEncontrados.put(i+1, listaContactos.get(i));
+            //EntradaContacto entrada = new EntradaContacto(TipoContacto.TELEFONE, newString);
+            ArrayList <EntradaContacto> entradasEncontradas = listaContactos.get(i).procurarInformacaoParcial(newString);
+            if(!entradasEncontradas.isEmpty()){
+                Contacto newContacto = new Contacto(listaContactos.get(i).getIdentificacao(), entradasEncontradas.get(0));
+                for (int j = 1; j < entradasEncontradas.size(); j++) {
+                    newContacto.addEntradaContacto(entradasEncontradas.get(j));
+                }
+                contactosEncontrados.put(i+1, newContacto);
             }
         }
         return contactosEncontrados;

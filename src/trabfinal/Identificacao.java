@@ -64,6 +64,11 @@ public class Identificacao {
         
         public String getEmpresa(){
             return empresa;
-        } 
+        }
+        
+        
+        public boolean procurarIdentificacaoParcial(String newIdentificacao){
+            return nome.contains(newIdentificacao) || empresa.contains(newIdentificacao);
+        }
 
 }

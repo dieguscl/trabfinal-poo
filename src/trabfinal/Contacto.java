@@ -28,6 +28,10 @@ public class Contacto {
         return s;
     }
     
+    public ArrayList<EntradaContacto> getEntradasContacto(){
+        return entradas;
+    }
+    
     public void addEntradaContacto(EntradaContacto newEntradaContacto){
         // adicionar metodo de validacao de contactos
         entradas.add(newEntradaContacto);
@@ -62,6 +66,16 @@ public class Contacto {
         ArrayList<EntradaContacto> informacao = new ArrayList<>();
         for(int i = 0; i < entradas.size(); i++){
             if(entradas.get(i).equals(newEntradaContacto)){
+                informacao.add(entradas.get(i));
+            }
+        }
+        return informacao;
+    }
+    
+    public ArrayList<EntradaContacto> procurarInformacaoParcial(String newString){
+        ArrayList<EntradaContacto> informacao = new ArrayList<>();
+        for(int i = 0; i < entradas.size(); i++){
+            if(entradas.get(i).procurarEntradaParcial(newString)){
                 informacao.add(entradas.get(i));
             }
         }

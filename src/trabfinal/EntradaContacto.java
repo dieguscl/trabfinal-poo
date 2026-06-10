@@ -32,9 +32,10 @@ public class EntradaContacto {
         return tipo;
     }
     
-    // comparar entrada: recebe string, retorna bool
-    // faz match parcial entre entrada e string
     // parametro para fazer completo
+    public boolean procurarEntradaParcial(String newValor){
+        return valor.contains(newValor);
+    }
     
     @Override
         public boolean equals(Object obj){
