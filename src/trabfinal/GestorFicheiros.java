@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *   C{TAB}nome{TAB}empresa   -> inicio de um contacto
  *   E{TAB}TIPO{TAB}valor     -> entrada do ultimo contacto lido (TIPO = TELEFONE|TELEMOVEL|MAIL)
  *
- * @author Diego Laya (2025154378)
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public class GestorFicheiros {
 
@@ -56,10 +56,12 @@ public class GestorFicheiros {
                     continue;
                 }
                 String[] campos = linha.split(SEP, -1);
-                if (campos[0].equals("C") && campos.length >= 3) {
+                if (campos[0].equals("C") && campos.length >= 2) {
                     // Fecha o contacto anterior antes de comecar um novo.
                     adicionarContacto(contactos, idAtual, entradasAtual);
-                    idAtual = criarIdentificacao(campos[1], campos[2]);
+                    // A empresa e opcional: contacto pessoal pode vir so "C{TAB}nome".
+                    String empresa = campos.length >= 3 ? campos[2] : "";
+                    idAtual = criarIdentificacao(campos[1], empresa);
                     entradasAtual = new ArrayList<>();
                 } else if (campos[0].equals("E") && campos.length >= 3 && idAtual != null) {
                     EntradaContacto entrada = criarEntrada(campos[1], campos[2]);

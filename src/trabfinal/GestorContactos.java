@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 /**
  *
- * @author luis
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public class GestorContactos {
     private final ArrayList<Contacto> listaContactos;

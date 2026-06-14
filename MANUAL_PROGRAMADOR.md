@@ -2,7 +2,8 @@
 
 **Programação Orientada a Objetos — 2025/2026**
 
-> Aluno: **Diego Laya** — nº **2025154378**
+> Aluno 1: **Diego Laya** — nº **2025154378**
+> Aluno 2: **Luis Junqueira** — nº **2025168125**
 
 ---
 

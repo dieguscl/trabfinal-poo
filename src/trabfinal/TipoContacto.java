@@ -6,7 +6,7 @@ package trabfinal;
 
 /**
  *
- * @author diegus
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public enum TipoContacto{ TELEFONE, TELEMOVEL, MAIL;
 

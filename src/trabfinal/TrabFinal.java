@@ -9,7 +9,7 @@ package trabfinal;
  * O Menu trata de ler os contactos do ficheiro no arranque e de os gravar
  * antes de terminar, garantindo que cada utilizacao usa a informacao mais atual.
  *
- * @author Diego Laya (2025154378)
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public class TrabFinal {
 
