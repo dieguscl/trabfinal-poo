@@ -427,7 +427,7 @@ public class Menu {
 
         System.out.println("Contactos com essa informação:");
         System.out.println(sb);
-        perguntarEscreverFicheiro("********************************\n*** Encontrar Contactos:\nContactos com essa informação:\n" + sb);
+        perguntarEscreverPesquisa("********************************\n*** Encontrar Contactos:\nContactos com essa informação:\n" + sb);
     }
 
 
@@ -447,6 +447,20 @@ public class Menu {
             String nome = scanner.nextLine().trim();
             if (!nome.isEmpty() && GestorFicheiros.exportarTexto(conteudo, nome)) {
                 System.out.println("Ficheiro gravado com sucesso!");
+            }
+        }
+    }
+
+    /**
+     * Pergunta (S/N) se quer gravar o resultado da pesquisa. O nome e gerado
+     * automaticamente como "pesquisa-<data>.txt" (com sufixo -2, -3, ... se ja existir).
+     */
+    private void perguntarEscreverPesquisa(String conteudo) {
+        System.out.println("Escrever em Ficheiro (S/N)?");
+        if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
+            String nome = GestorFicheiros.proximoNomePesquisa();
+            if (GestorFicheiros.exportarTexto(conteudo, nome)) {
+                System.out.println("Ficheiro gravado com sucesso: " + nome);
             }
         }
     }

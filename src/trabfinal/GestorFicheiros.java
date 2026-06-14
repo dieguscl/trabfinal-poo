@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -110,6 +111,24 @@ public class GestorFicheiros {
      */
     public static boolean exportarTexto(String conteudo, String ficheiro) {
         return escrever(ficheiro, conteudo);
+    }
+
+    /**
+     * Gera o proximo nome livre para gravar uma pesquisa:
+     * "pesquisa-AAAA-MM-DD.txt". Se ja existir, acrescenta um sufixo "-2",
+     * "-3", ... antes da extensao.
+     *
+     * @return nome de ficheiro ainda nao existente
+     */
+    public static String proximoNomePesquisa() {
+        String base = "pesquisa-" + LocalDate.now();
+        String nome = base + ".txt";
+        int n = 2;
+        while (Files.exists(Path.of(nome))) {
+            nome = base + "-" + n + ".txt";
+            n++;
+        }
+        return nome;
     }
 
     // ---------------------------------------------------------------- Apoio

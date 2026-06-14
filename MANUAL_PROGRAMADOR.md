@@ -135,3 +135,9 @@ Dentro do mesmo contacto, `temInformacao`/`acrescentarInformacao` evitam valores
 - **Validação de dados** (ex.: telemóvel = 9 dígitos): acrescentar em
   `EntradaContacto` ou no `Menu`, usando `String.matches` (expressões regulares).
 - **Outro formato de ficheiro** (CSV/JSON): alterar apenas `GestorFicheiros`.
+- **Importar de um ficheiro à escolha** (funcionalidade futura): acrescentar uma
+  opção no menu que permita ao utilizador indicar/escolher o ficheiro de onde
+  importar contactos para a agenda, em vez de usar apenas o `contactos.txt` fixo.
+  Reutiliza `GestorFicheiros.carregar(nome)` — basta pedir o nome do ficheiro e
+  juntar os contactos lidos à agenda, aplicando as mesmas verificações de unicidade
+  da opção "Acrescentar Contacto".
