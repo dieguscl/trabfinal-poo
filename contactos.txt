@@ -1,0 +1,15 @@
+C	Ana Santos
+E	TELEFONE	211111111
+E	TELEMOVEL	911111111
+E	MAIL	asantos@gmail.com
+C	Beatriz Sebastião	Ideal, Lda
+E	TELEMOVEL	912222222
+E	MAIL	bs@ideal.pt
+C	Carlos Mendes
+E	TELEMOVEL	933333333
+C	Daniela Sousa	Tech Setúbal
+E	TELEFONE	265444444
+E	MAIL	daniela@techsetubal.pt
+C	Eduardo Pinto
+E	TELEMOVEL	966666666
+E	MAIL	edu.pinto@mail.com

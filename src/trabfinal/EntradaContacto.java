@@ -6,7 +6,7 @@ package trabfinal;
 
 /**
  *
- * @author luis
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public class EntradaContacto {
     private final TipoContacto tipo;

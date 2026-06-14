@@ -5,65 +5,20 @@
 package trabfinal;
 
 /**
+ * Ponto de entrada da aplicacao de Gestao de Contactos.
+ * O Menu trata de ler os contactos do ficheiro no arranque e de os gravar
+ * antes de terminar, garantindo que cada utilizacao usa a informacao mais atual.
  *
- * @author luis
+ * @author Diego Laya (2025154378), Luis Junqueira (2025168125)
  */
 public class TrabFinal {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        Identificacao pessoa1 = new Identificacao("João Silva", "ACME, Inc");
-        
-        Identificacao pessoa2 = new Identificacao("Joana Fontes","");
-        
-        // System.out.println(pessoa1.toString());
-        
-        EntradaContacto cont1 = new EntradaContacto(TipoContacto.MAIL, "joao.silva@acme.com");
-        
-        // System.out.println(cont1);
-        
-        EntradaContacto cont2 = new EntradaContacto(TipoContacto.TELEFONE, "913435679");
-        
-        // System.out.println(cont2);
-        
-        Contacto contTest1 = new Contacto(pessoa1, cont1);
-        System.out.println(contTest1);
-        
-        Contacto contTest2 = new Contacto(pessoa2, cont2);
-        EntradaContacto cont3 = new EntradaContacto(TipoContacto.MAIL, "fontesjoana@personal.com");
-        EntradaContacto cont4 = new EntradaContacto(TipoContacto.MAIL, "joanasfontes@newmail.pt");
-        contTest2.addEntradaContacto(cont3);
-        contTest2.addEntradaContacto(cont4);
-        
-        Contacto contTest3 = new Contacto(new Identificacao("Jonas Carneiro", ""), new EntradaContacto(TipoContacto.TELEMOVEL, "912334455"));
+    /** Nome do ficheiro onde a agenda e guardada entre execucoes. */
+    private static final String FICHEIRO_DADOS = "contactos.txt";
 
-        System.out.println(contTest2);
-        
-        
-        
-        GestorContactos newGestorContactos = new GestorContactos();
-        newGestorContactos.acrescentarContacto(contTest2);
-        newGestorContactos.acrescentarContacto(contTest1);
-        newGestorContactos.acrescentarContacto(contTest3);
-        //newGestorContactos.removerContacto(1);
-        //System.out.println(contTest2.procurarInformacao("joana"));
-        
-        
-        //System.out.println(newGestorContactos.encontrarContactos("joana"));
-        
-        System.out.println(contTest1.getEntradas().toString());
-        System.out.println(contTest2.getEntradas().toString());
-        
-        System.out.println(newGestorContactos.estatisticas());
-        
-        Menu menu = new Menu(newGestorContactos);
+    public static void main(String[] args) {
+        GestorContactos gestor = new GestorContactos();
+        Menu menu = new Menu(gestor, FICHEIRO_DADOS);
         menu.menuInicial();
     }
-    
-    
-            
-    
 }
