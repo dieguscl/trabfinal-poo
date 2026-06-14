@@ -20,7 +20,7 @@ public class EntradaContacto {
                 throw new IllegalArgumentException("O valor do contacto é obrigatório.");
             }
             tipo = newTipo;
-            valor = newValor;
+            valor = newValor.trim();
     }
     
     @Override

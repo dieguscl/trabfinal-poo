@@ -47,7 +47,14 @@ public class GestorContactos {
     }
     
     public ArrayList<Contacto> getListaContactos(){
-        return listaContactos;
+        return new ArrayList<>(listaContactos);
+    }
+    
+    public Contacto getContacto(int indice){
+        if (indice < 0 || indice >= listaContactos.size()){
+            throw new IllegalArgumentException("Índice inválido.");
+        }
+        return listaContactos.get(indice);
     }
     
     // Metodo Encontrar
@@ -72,12 +79,8 @@ public class GestorContactos {
                 contactosEncontrados.add(i);
                 continue;
             }
-            ArrayList <EntradaContacto> entradasEncontradas = listaContactos.get(i).procurarInformacaoParcial(newString);
-            if(!entradasEncontradas.isEmpty()){
-                Contacto newContacto = new Contacto(listaContactos.get(i).getIdentificacao(), entradasEncontradas.get(0));
-                for (int j = 1; j < entradasEncontradas.size(); j++) {
-                    newContacto.addEntradaContacto(entradasEncontradas.get(j));
-                }
+            ArrayList<EntradaContacto> entradasEncontradas = listaContactos.get(i).procurarInformacaoParcial(newString);
+            if (!entradasEncontradas.isEmpty()) {
                 contactosEncontrados.add(i);
             }
         }
@@ -114,8 +117,9 @@ public class GestorContactos {
 
         for (int i = 0; i < listaContactos.size(); i++){
             Contacto contacto = listaContactos.get(i);
-            for (int j = 0; j < contacto.getEntradas().size(); j++){
-                TipoContacto tipo = contacto.getEntradas().get(j).getTipo();
+            ArrayList<EntradaContacto> entradas = contacto.getEntradas();
+            for (int j = 0; j < entradas.size(); j++) {
+                TipoContacto tipo = entradas.get(j).getTipo();
                 contagem.put(tipo, contagem.getOrDefault(tipo, 0) + 1);
             }
         }

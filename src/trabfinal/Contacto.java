@@ -14,6 +14,12 @@ public class Contacto {
     private final ArrayList<EntradaContacto> entradas;
     
     public Contacto(Identificacao newIdentificacao, EntradaContacto newEntradaContacto){
+        if (newIdentificacao == null) {
+            throw new IllegalArgumentException("A identificação é obrigatória.");
+        }
+        if (newEntradaContacto == null) {
+            throw new IllegalArgumentException("A entrada de contacto é obrigatória.");
+        }
         identificacao = newIdentificacao;
         entradas = new ArrayList<>();
         entradas.add(newEntradaContacto);
@@ -30,12 +36,15 @@ public class Contacto {
         return sb.toString();
     }
     
-    public ArrayList<EntradaContacto> getEntradasContacto(){
-        return entradas;
-    }
+//    public ArrayList<EntradaContacto> getEntradasContacto(){
+//        return entradas;
+//    }
     
     public void addEntradaContacto(EntradaContacto newEntradaContacto){
-        // adicionar metodo de validacao de contactos
+        if (newEntradaContacto == null) {
+            throw new IllegalArgumentException("A entrada de contacto é obrigatória.");
+        }
+
         entradas.add(newEntradaContacto);
     }
     
@@ -85,17 +94,11 @@ public class Contacto {
     }
     
     public boolean temAlgumaInformacaoIgual(Contacto newContacto){
-        boolean temMesmaInformacao = false;
-        
-        for (int i = 0; i < newContacto.getEntradas().size(); i++){
-            for (int j = 0; j < entradas.size(); j++){
-                if (newContacto.getEntradas().get(i).equals(entradas.get(j))){
-                    temMesmaInformacao = true;
-                }
-                
-            }    
-        }
-        return temMesmaInformacao;
+        for (EntradaContacto entradaOutro : newContacto.getEntradas()) { 
+            if (temInformacao(entradaOutro)) {
+                return true;
+            }
+        } return false;
     }
     
     public ArrayList<EntradaContacto> getEntradas(){

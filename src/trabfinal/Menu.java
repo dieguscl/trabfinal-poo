@@ -125,22 +125,22 @@ public class Menu {
     private void acrescentarContacto() {
         System.out.println("********************************\n*** Acrescentar contacto:");
         System.out.println("Indique o nome do contacto:");
-        String nome = scanner.nextLine();
-        if (nome.equals("")) {
+        String nome = scanner.nextLine().trim();
+        if (nome.isBlank()) {
             //menuInicial();
             return;
         }
 
         System.out.println("Indique o nome da companhia, se for um contacto profissional, ou então deixe vazio:");
-        String empresa = scanner.nextLine();
+        String empresa = scanner.nextLine().trim();
 
         Identificacao novaId = new Identificacao(nome, empresa);
         Contacto novoContacto = null;
 
         while (true) {
             System.out.println("Indique os dados do contacto ou vazio para terminar:");
-            String dados = scanner.nextLine();
-            if (dados.equals("")) {
+            String dados = scanner.nextLine().trim();
+            if (dados.isBlank()) {
                 break;
             }
 
@@ -229,7 +229,7 @@ public class Menu {
     }
     
     private void removerContactoIndividual(int indiceEncontrado){
-        Contacto contactoEncontrado = gestor.getListaContactos().get(indiceEncontrado);
+        Contacto contactoEncontrado = gestor.getContacto(indiceEncontrado);
         System.out.println("O contacto encontrado foi:");
         System.out.println((indiceEncontrado+1) + " - " + contactoEncontrado.toString() + "\n");
         System.out.println("1 - Remover o contacto completo");
@@ -258,22 +258,28 @@ public class Menu {
                     }
                 }
             }
+            case "3" -> {
+            }
             default ->
-                System.out.println("Contacto não introduzido.");
+                System.out.println("Opção inválida.");
         }
     }
 
     private void removerContacto() {
         System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine().trim();
-        ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
-        String s = "";
-        if(contactosEncontrados.isEmpty() || informacao.isBlank()){
+        if(informacao.isBlank()){
             System.out.println("Informação não encontrada nos contactos");
+            return;
         }
-        else if(contactosEncontrados.size() == 1){
-            
-            //String s = "";
+        
+        ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
+        if (contactosEncontrados.isEmpty()) {
+            System.out.println("Informação não encontrada nos contactos");
+            return;
+        }   
+        
+        if(contactosEncontrados.size() == 1){
             int indiceEncontrado = contactosEncontrados.get(0);
             
             removerContactoIndividual(indiceEncontrado);
@@ -318,7 +324,7 @@ public class Menu {
             System.out.println("Contactos com essa informação:");
             StringBuilder sb = new StringBuilder();
             for (int indice : contactosEncontrados){
-                Contacto contacto = gestor.getListaContactos().get(indice);
+                Contacto contacto = gestor.getContacto(indice);
                 
                 sb.append(indice + 1)
                   .append(" - ")
@@ -398,6 +404,11 @@ public class Menu {
     private void encontrarContactos(){
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine().trim();
+        if (informacao.isBlank()) {
+            System.out.println("Informação não encontrada nos contactos");
+            return;
+        }
+
         ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
         if (contactosEncontrados.isEmpty()){
             System.out.println("Informação não encontrada nos contactos");
@@ -408,7 +419,7 @@ public class Menu {
         for (int indice : contactosEncontrados) {
             sb.append(indice + 1)
               .append(" - ")
-              .append(gestor.getListaContactos().get(indice))
+              .append(gestor.getContacto(indice))
               .append('\n');
         }
 
