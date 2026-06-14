@@ -101,7 +101,7 @@ public class GestorContactos {
         ArrayList<Contacto> listaContactosInfoRepetida = new ArrayList<>();
         
         for (int i = 0; i < listaContactos.size(); i++){
-            if (newContacto.compararInformacao(listaContactos.get(i))){
+            if (newContacto.temAlgumaInformacaoIgual(listaContactos.get(i))){
                 listaContactosInfoRepetida.add(listaContactos.get(i));
             }
         }
@@ -110,7 +110,6 @@ public class GestorContactos {
     
     // Metodo Estatisticas
     public String estatisticas(){
-        String s = "********************************\n *** Estatísticas:";
         HashMap<TipoContacto, Integer> contagem = new HashMap<>();
 
         for (int i = 0; i < listaContactos.size(); i++){
@@ -121,10 +120,17 @@ public class GestorContactos {
             }
         }
 
-        return s + String.format("\nTelemóvel: %d\nTelefone: %d\nMail: %d",
+        StringBuilder sb = new StringBuilder();
+        sb.append("********************************\n");
+        sb.append("*** Estatísticas:");
+        sb.append(String.format(
+                "\nTelemóvel: %d\nTelefone: %d\nMail: %d",
                 contagem.getOrDefault(TipoContacto.TELEMOVEL, 0),
                 contagem.getOrDefault(TipoContacto.TELEFONE, 0),
-                contagem.getOrDefault(TipoContacto.MAIL, 0));
+                contagem.getOrDefault(TipoContacto.MAIL, 0)
+        ));
+
+        return sb.toString();
     }
 }
 

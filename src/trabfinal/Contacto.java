@@ -21,11 +21,13 @@ public class Contacto {
     
     @Override
     public String toString(){
-        String s = identificacao.toString();
-        for (int i = 0; i < entradas.size(); i++){
-            s += String.format("\n%s", entradas.get(i).toString()); 
+        StringBuilder sb = new StringBuilder();
+        sb.append(identificacao);
+        for (int i = 0; i < entradas.size(); i++) {
+            sb.append('\n').append(entradas.get(i));
         }
-        return s;
+
+        return sb.toString();
     }
     
     public ArrayList<EntradaContacto> getEntradasContacto(){
@@ -37,8 +39,8 @@ public class Contacto {
         entradas.add(newEntradaContacto);
     }
     
-    public void removerEntradaContacto(EntradaContacto newEntradaContacto){
-        entradas.remove(newEntradaContacto);
+    public boolean removerEntradaContacto(EntradaContacto newEntradaContacto){
+        return entradas.remove(newEntradaContacto);
     }
     
     // alterar para retornar objetos entrada
@@ -82,12 +84,12 @@ public class Contacto {
         return informacao;
     }
     
-    public boolean compararInformacao(Contacto newContacto){
+    public boolean temAlgumaInformacaoIgual(Contacto newContacto){
         boolean temMesmaInformacao = false;
         
         for (int i = 0; i < newContacto.getEntradas().size(); i++){
             for (int j = 0; j < entradas.size(); j++){
-                if (newContacto.getEntradas().get(i).getValor().equals(entradas.get(j).getValor())){
+                if (newContacto.getEntradas().get(i).equals(entradas.get(j))){
                     temMesmaInformacao = true;
                 }
                 
@@ -97,7 +99,7 @@ public class Contacto {
     }
     
     public ArrayList<EntradaContacto> getEntradas(){
-        return entradas;
+        return new ArrayList<>(entradas);
     }
     
     public Identificacao getIdentificacao(){
@@ -106,7 +108,7 @@ public class Contacto {
 
     public boolean temInformacao(EntradaContacto entrada){
         for (int i = 0; i < entradas.size(); i++){
-            if (entradas.get(i).getValor().equals(entrada.getValor())){
+            if (entradas.get(i).temMesmoValor(entrada)){
                 return true;
             }
         }

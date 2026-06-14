@@ -68,7 +68,7 @@ public class Identificacao {
         
         
         public boolean procurarIdentificacaoParcial(String newIdentificacao){
-            return nome.contains(newIdentificacao) || empresa.contains(newIdentificacao);
+            return nome.toLowerCase().contains(newIdentificacao.toLowerCase()) || empresa.toLowerCase().contains(newIdentificacao.toLowerCase());
         }
 
 }

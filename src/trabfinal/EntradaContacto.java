@@ -13,9 +13,13 @@ public class EntradaContacto {
     private final String valor;
     
     public EntradaContacto(TipoContacto newTipo, String newValor){
-            // validate(newNome);
+            if (newTipo == null) {
+                throw new IllegalArgumentException("O tipo de contacto é obrigatório.");
+            }
+            if (newValor == null || newValor.trim().isEmpty()) {
+                throw new IllegalArgumentException("O valor do contacto é obrigatório.");
+            }
             tipo = newTipo;
-            // validade(newEmpresa);
             valor = newValor;
     }
     
@@ -34,18 +38,26 @@ public class EntradaContacto {
     
     // parametro para fazer completo
     public boolean procurarEntradaParcial(String newValor){
-        return valor.contains(newValor);
+        return valor.toLowerCase().contains(newValor.toLowerCase());
+    }
+    
+    public boolean temMesmoValor(EntradaContacto outraEntrada) {
+        return valor.equals(outraEntrada.getValor());
     }
     
     @Override
-        public boolean equals(Object obj){
-            if (this == obj){
-                return true;
-            }
-            if (obj == null || getClass() != obj.getClass()){
-                return false;
-            }
-            EntradaContacto other = (EntradaContacto) obj;
-            return tipo.equals(other.tipo) && valor.equals(other.valor);
+    public boolean equals(Object obj){
+        if (this == obj){
+            return true;
         }
+        if (obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+        EntradaContacto other = (EntradaContacto) obj;
+        return tipo.equals(other.tipo) && valor.equals(other.valor);
+    }
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(tipo, valor);
+    }
 }
