@@ -9,8 +9,8 @@ package trabfinal;
  * @author luis
  */
 public class EntradaContacto {
-    TipoContacto tipo;
-    String valor;
+    private final TipoContacto tipo;
+    private final String valor;
     
     public EntradaContacto(TipoContacto newTipo, String newValor){
             // validate(newNome);

@@ -27,36 +27,72 @@ public class Menu {
     }
 
     
+//    public void menuInicial() {
+//        if (runNumber != 0) {
+//            System.out.println("\n-----------------");
+//            runNumber++;
+//        }
+//        String s = "1 - Listar Contactos\n";
+//        s += "2 - Acrescentar Contacto\n";
+//        s += "3 - Remover Contacto\n";
+//        s += "4 - Encontrar Contactos\n";
+//        s += "5 - Estatísticas\n";
+//        s += "6 - Sair";
+//        System.out.println(s);
+//
+//        switch (scanner.nextLine().trim()) {
+//            case "1" ->
+//                mostrarListaContactos();
+//            case "2" ->
+//                acrescentarContacto();
+//            case "3" ->
+//                removerContacto();
+//            case "4" ->
+//                encontrarContactos();
+//            case "5" ->
+//                mostrarEstatisticas();
+//            case "6" -> {
+//            }
+//            default ->
+//                menuInicial();
+//        }
+//    }
+    
     public void menuInicial() {
-        if (runNumber != 0) {
-            System.out.println("\n-----------------");
-            runNumber++;
-        }
-        String s = "1 - Listar Contactos\n";
-        s += "2 - Acrescentar Contacto\n";
-        s += "3 - Remover Contacto\n";
-        s += "4 - Encontrar Contactos\n";
-        s += "5 - Estatísticas\n";
-        s += "6 - Sair";
-        System.out.println(s);
+    boolean emExecucao = true;
 
-        switch (scanner.nextLine().trim()) {
-            case "1" ->
-                mostrarListaContactos();
-            case "2" ->
-                acrescentarContacto();
-            case "3" ->
-                removerContacto();
-            case "4" ->
-                encontrarContactos();
-            case "5" ->
-                mostrarEstatisticas();
-            case "6" -> {
+        while (emExecucao) {
+            mostrarOpcoes();
+            switch (scanner.nextLine().trim()) {
+                case "1" -> mostrarListaContactos();
+                case "2" -> acrescentarContacto();
+                case "3" -> removerContacto();
+                case "4" -> encontrarContactos();
+                case "5" -> mostrarEstatisticas();
+                case "6" -> {
+                    //funcao de save;
+                    emExecucao = false;
+                }
+                default -> System.out.println("Opção inválida.");
             }
-            default ->
-                menuInicial();
         }
     }
+    
+    private void mostrarOpcoes() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n-----------------\n");
+        sb.append("1 - Listar Contactos\n");
+        sb.append("2 - Acrescentar Contacto\n");
+        sb.append("3 - Remover Contacto\n");
+        sb.append("4 - Encontrar Contactos\n");
+        sb.append("5 - Estatísticas\n");
+        sb.append("6 - Sair");
+
+        System.out.println(sb);
+    }
+    
+    
 
     private void mostrarListaContactos() {
         System.out.println("********************************\n*** Listar Contactos:");
@@ -80,7 +116,7 @@ public class Menu {
             }
         }
 
-        menuInicial();
+        //menuInicial();
     }
 
     private void acrescentarContacto() {
@@ -88,7 +124,7 @@ public class Menu {
         System.out.println("Indique o nome do contacto:");
         String nome = scanner.nextLine();
         if (nome.equals("")) {
-            menuInicial();
+            //menuInicial();
             return;
         }
 
@@ -118,12 +154,12 @@ public class Menu {
         }
 
         if (novoContacto == null) {
-            menuInicial();
+            //menuInicial();
             return;
         }
 
         adicionarComVerificacao(novoContacto);
-        menuInicial();
+        //menuInicial();
     }
 
     private TipoContacto lerTipoContacto() {
@@ -195,7 +231,6 @@ public class Menu {
         String s = "";
         s += (indiceEncontrado+1) + " - " + contactoEncontrado.toString() + "\n";    
         System.out.println(s);
-
         System.out.println("1 - Remover o contacto completo");
         System.out.println("2 - Eliminar um tipo de contacto");
         System.out.println("3 - Voltar");
@@ -230,7 +265,7 @@ public class Menu {
 
     private void removerContacto() {
         System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
-        String informacao = scanner.nextLine();
+        String informacao = scanner.nextLine().trim();
         ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
         String s = "";
         if(contactosEncontrados.isEmpty() || informacao.isBlank()){
@@ -292,9 +327,9 @@ public class Menu {
             }
             System.out.println(s);
             System.out.println("Indique o número do contacto ou 0 para esquecer:");
-            String idx = scanner.nextLine();
+            String idx = scanner.nextLine().trim();
             if (idx.isBlank()) {
-                menuInicial();
+                //menuInicial();
                 return;
             }
             int indiceSelecionado;
@@ -302,11 +337,11 @@ public class Menu {
                 indiceSelecionado = Integer.parseInt(idx) - 1;
             } catch (NumberFormatException e) {
                 System.out.println("Valor inválido.");
-                menuInicial();
+                //menuInicial();
                 return;
             }
             if (indiceSelecionado == -1 || !contactosEncontrados.contains(indiceSelecionado)) {
-                menuInicial();
+                //menuInicial();
                 return;
             }
             
@@ -350,16 +385,16 @@ public class Menu {
 //            }
         }
         
-        menuInicial();
+        //menuInicial();
     }
 
     private void encontrarContactos(){
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
-        String informacao = scanner.nextLine();
+        String informacao = scanner.nextLine().trim();
         ArrayList<Integer> contactosEncontrados = gestor.encontrarInformacao(informacao);
         if (contactosEncontrados.isEmpty()){
             System.out.println("Informação não encontrada nos contactos");
-            menuInicial();
+            //menuInicial();
             return;
         }
         String s = "";
@@ -369,13 +404,13 @@ public class Menu {
         System.out.println("Contactos com essa informação:");
         System.out.println(s);
         
-        menuInicial();
+        //menuInicial();
     }
     
     
     private void mostrarEstatisticas() {
         System.out.println(gestor.estatisticas());
 
-        menuInicial();
+        //menuInicial();
     }
 }
