@@ -17,13 +17,21 @@ public class Menu {
 
     private final GestorContactos gestor;
     private final Scanner scanner = new Scanner(System.in);
+    private final String ficheiroDados;
     private int runNumber = 0;
 
-    // load ficheiro
     // iniciar menu base
-    public Menu(GestorContactos newGestor) {
-        // gestor.load
+    public Menu(GestorContactos newGestor, String ficheiroDados) {
         gestor = newGestor;
+        this.ficheiroDados = ficheiroDados;
+        carregarContactos();
+    }
+
+    /** Le os contactos do ficheiro de dados para a agenda (no arranque). */
+    private void carregarContactos() {
+        for (Contacto contacto : GestorFicheiros.carregar(ficheiroDados)) {
+            gestor.acrescentarContacto(contacto);
+        }
     }
 
     
@@ -70,7 +78,8 @@ public class Menu {
                 case "4" -> encontrarContactos();
                 case "5" -> mostrarEstatisticas();
                 case "6" -> {
-                    //funcao de save;
+                    GestorFicheiros.guardar(gestor.getListaContactos(), ficheiroDados);
+                    System.out.println("Contactos gravados. Até à próxima!");
                     emExecucao = false;
                 }
                 default -> System.out.println("Opção inválida.");
@@ -109,14 +118,7 @@ public class Menu {
                   .append(listaContactos.get(i));
             }
             System.out.println(sb);
-            System.out.println("Escrever em Ficheiro (S/N)?");
-
-            switch (scanner.nextLine().trim().toLowerCase()) {
-                case "s" ->
-                    System.out.println("Importar");
-                case "n" ->
-                    System.out.println("Não importar");
-            }
+            perguntarEscreverFicheiro("********************************\n*** Listar Contactos:" + sb);
         }
 
         //menuInicial();
@@ -425,14 +427,27 @@ public class Menu {
 
         System.out.println("Contactos com essa informação:");
         System.out.println(sb);
-        
-        //menuInicial();
+        perguntarEscreverFicheiro("********************************\n*** Encontrar Contactos:\nContactos com essa informação:\n" + sb);
     }
-    
-    
+
+
     private void mostrarEstatisticas() {
         System.out.println(gestor.estatisticas());
 
         //menuInicial();
+    }
+
+    // ---------------------------------------------------- Apoio a ficheiros
+
+    /** Pergunta (S/N) se quer gravar a listagem num ficheiro de texto e, se sim, grava. */
+    private void perguntarEscreverFicheiro(String conteudo) {
+        System.out.println("Escrever em Ficheiro (S/N)?");
+        if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
+            System.out.println("Indique o nome do ficheiro:");
+            String nome = scanner.nextLine().trim();
+            if (!nome.isEmpty() && GestorFicheiros.exportarTexto(conteudo, nome)) {
+                System.out.println("Ficheiro gravado com sucesso!");
+            }
+        }
     }
 }
