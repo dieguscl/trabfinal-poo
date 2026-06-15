@@ -34,15 +34,7 @@ O programa cria/atualiza o ficheiro de dados **`contactos.txt`** na pasta onde �
 executado (definido em `TrabFinal.FICHEIRO_DADOS`).
 
 ## 3. Arquitetura e relações entre classes
-
-```
-TrabFinal ---> Menu ---> GestorContactos  <>--1..*  Contacto  <*>--1  Identificacao
-                |                                       |
-                +---> GestorFicheiros                   <>--1..*  EntradaContacto ---> TipoContacto (enum)
-```
-
-(`<>` agregação, `<*>` composição.) Diagrama de classes completo em
-**`src/Diagram Classes.drawio`** (abrir com [draw.io](https://app.diagrams.net)).
+<img width="1486" height="783" alt="image" src="https://github.com/user-attachments/assets/8998b302-836d-4520-8fe8-df3afb705892" />
 
 **Separação de responsabilidades (camadas):**
 
