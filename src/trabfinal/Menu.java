@@ -93,7 +93,7 @@ public class Menu {
         System.out.println("********************************\n*** Listar Contactos:");
         ArrayList<Contacto> listaContactos = gestor.getListaContactos();
         if (listaContactos.isEmpty()) {
-            System.out.println("\nNão há contactos!\nPrima entrer para continuar!");
+            System.out.println("\nNão há contactos!\nPrima enter para continuar!");
             scanner.nextLine();
         } else {
             // O mesmo texto é usado para mostrar no ecrã e para exportar para ficheiro.
@@ -121,7 +121,7 @@ public class Menu {
             return;
         }
 
-        System.out.println("Indique o nome da companhia, se for um contacto profissional, ou então deixe vazio:");
+        System.out.println("Indique o nome da empresa, se for um contacto profissional, ou então deixe vazio:");
         String empresa = scanner.nextLine().trim();
 
         // Cria a identificação antes das entradas, porque o Contacto precisa dela no construtor.
@@ -167,7 +167,7 @@ public class Menu {
         while (true) {
             System.out.println("Indique o tipo do contacto:");
             System.out.println("1 - Telefone");
-            System.out.println("2 - Telemovel");
+            System.out.println("2 - Telemóvel");
             System.out.println("3 - Mail");
             try {
                 // Converte a opção numérica para o enum usado no resto do programa.
