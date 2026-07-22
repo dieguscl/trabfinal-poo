@@ -13,46 +13,42 @@ import java.util.Scanner;
  */
 public class Menu {
 
-    // Gestor que mantém a lista de contactos em memória.
     private final GestorContactos gestor;
 
-    // Scanner único para ler todas as opções e dados introduzidos pelo utilizador.
     private final Scanner scanner = new Scanner(System.in);
 
-    // Nome do ficheiro de persistência usado no arranque e na saída do programa.
     private final String ficheiroDados;
 
     // Cria o menu principal e associa-o ao gestor e ao ficheiro de dados.
     // Também carrega os contactos guardados para preparar o arranque da aplicação.
     public Menu(GestorContactos newGestor, String ficheiroDados) {
-        // Recebe o gestor já criado no main e associa o ficheiro de dados a este menu.
         gestor = newGestor;
         this.ficheiroDados = ficheiroDados;
-
-        // O carregamento é feito aqui para o utilizador começar logo com a agenda guardada.
         carregarContactos();
     }
 
     // Carrega os contactos em ficheiro para a agenda em memória.
     // Cada contacto lido é entregue ao GestorContactos.
     private void carregarContactos() {
-        // GestorFicheiros devolve uma lista; o menu passa cada contacto para o gestor principal.
-        // Assim, a origem dos dados fica separada da classe que gere a coleção em memória.
         for (Contacto contacto : GestorFicheiros.carregar(ficheiroDados)) {
             gestor.acrescentarContacto(contacto);
         }
     }
 
+    // Grava a agenda em ficheiro imediatamente após cada alteração.
+    // Evita perder dados se o programa terminar sem passar pela opção de sair.
+    private void guardarAgenda() {
+        GestorFicheiros.guardar(gestor.getListaContactos(), ficheiroDados);
+    }
+
     // Mostra o menu principal e executa a opção escolhida pelo utilizador.
     // O ciclo termina apenas quando é escolhida a opção de sair.
     public void menuInicial() {
-        // O ciclo mantém o programa ativo até o utilizador escolher a opção 6.
         boolean emExecucao = true;
 
         while (emExecucao) {
             mostrarOpcoes();
 
-            // Lê a opção como String para evitar problemas com quebras de linha do Scanner.
             switch (scanner.nextLine().trim()) {
                 case "1" -> mostrarListaContactos();
                 case "2" -> acrescentarContacto();
@@ -60,7 +56,6 @@ public class Menu {
                 case "4" -> encontrarContactos();
                 case "5" -> mostrarEstatisticas();
                 case "6" -> {
-                    // Antes de sair, grava a lista atual para manter os dados entre execuções.
                     GestorFicheiros.guardar(gestor.getListaContactos(), ficheiroDados);
                     System.out.println("Contactos gravados. Até à próxima!");
                     emExecucao = false;
@@ -72,7 +67,6 @@ public class Menu {
 
     // Apresenta no ecrã as opções principais da aplicação.
     private void mostrarOpcoes() {
-        // StringBuilder junta as linhas do menu antes de imprimir tudo de uma vez.
         StringBuilder sb = new StringBuilder();
 
         sb.append("\n-----------------\n");
@@ -86,17 +80,14 @@ public class Menu {
         System.out.println(sb);
     }
 
-    // Lista todos os contactos existentes na agenda.
     // Depois de mostrar a lista, permite exportar essa informação para ficheiro.
     private void mostrarListaContactos() {
-        // Vai buscar uma cópia da lista ao gestor e apresenta cada contacto.
         System.out.println("********************************\n*** Listar Contactos:");
         ArrayList<Contacto> listaContactos = gestor.getListaContactos();
         if (listaContactos.isEmpty()) {
             System.out.println("\nNão há contactos!\nPrima enter para continuar!");
             scanner.nextLine();
         } else {
-            // O mesmo texto é usado para mostrar no ecrã e para exportar para ficheiro.
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < listaContactos.size(); i++) {
                 sb.append('\n')
@@ -112,19 +103,16 @@ public class Menu {
     // Recolhe os dados necessários para criar um novo contacto.
     // No fim, chama a verificação de duplicados antes de guardar na agenda.
     private void acrescentarContacto() {
-        // Primeiro lê a identificação do contacto; depois lê uma ou mais entradas.
         System.out.println("********************************\n*** Acrescentar contacto:");
         System.out.println("Indique o nome do contacto:");
         String nome = scanner.nextLine().trim();
         if (nome.isBlank()) {
-            // Nome vazio cancela a criação do contacto.
             return;
         }
 
         System.out.println("Indique o nome da empresa, se for um contacto profissional, ou então deixe vazio:");
         String empresa = scanner.nextLine().trim();
 
-        // Cria a identificação antes das entradas, porque o Contacto precisa dela no construtor.
         Identificacao novaId = new Identificacao(nome, empresa);
         Contacto novoContacto = null;
 
@@ -135,16 +123,12 @@ public class Menu {
                 break;
             }
 
-            // Para cada valor introduzido, pergunta também que tipo de contacto é.
             TipoContacto tipo = lerTipoContacto();
             EntradaContacto novaEntrada = new EntradaContacto(tipo, dados);
 
-            // O objeto Contacto só é criado quando existe a primeira entrada válida.
-            // As entradas seguintes são acrescentadas ao mesmo objeto.
             if (novoContacto == null) {
                 novoContacto = new Contacto(novaId, novaEntrada);
             } else if (novoContacto.temInformacao(novaEntrada)) {
-                // Evita repetir dentro do contacto que está a ser construído.
                 System.out.println("Essa informação já foi introduzida neste contacto.");
             } else {
                 novoContacto.addEntradaContacto(novaEntrada);
@@ -160,17 +144,13 @@ public class Menu {
         adicionarComVerificacao(novoContacto);
     }
 
-    // Lê do utilizador o tipo de entrada de contacto.
-    // Repete a pergunta até receber uma opção válida.
     private TipoContacto lerTipoContacto() {
-        // Repete a pergunta até o utilizador indicar uma opção existente.
         while (true) {
             System.out.println("Indique o tipo do contacto:");
             System.out.println("1 - Telefone");
             System.out.println("2 - Telemóvel");
             System.out.println("3 - Mail");
             try {
-                // Converte a opção numérica para o enum usado no resto do programa.
                 TipoContacto tipo = TipoContacto.fromInt(Integer.parseInt(scanner.nextLine().trim()));
                 if (tipo != null) {
                     return tipo;
@@ -194,6 +174,7 @@ public class Menu {
 
             if (scanner.nextLine().trim().equals("1")) {
                 existente.acrescentarInformacao(novo);
+                guardarAgenda();
                 System.out.println("Informação acrescentada ao contacto já existente.");
             } else {
                 System.out.println("Contacto não introduzido.");
@@ -216,10 +197,12 @@ public class Menu {
             switch (scanner.nextLine().trim()) {
                 case "1" -> {
                     comInfoRepetida.get(0).acrescentarInformacao(novo);
+                    guardarAgenda();
                     System.out.println("Informação acrescentada ao contacto já existente.");
                 }
                 case "2" -> {
                     gestor.acrescentarContacto(novo);
+                    guardarAgenda();
                     System.out.println("Novo contacto acrescentado.");
                 }
                 default ->
@@ -230,6 +213,7 @@ public class Menu {
 
         // Se não houver conflitos, o contacto é acrescentado diretamente.
         gestor.acrescentarContacto(novo);
+        guardarAgenda();
         System.out.println("Contacto acrescentado.");
     }
 
@@ -243,12 +227,13 @@ public class Menu {
         System.out.println("1 - Remover o contacto completo");
         System.out.println("2 - Eliminar um tipo de contacto");
         System.out.println("3 - Voltar");
-        System.out.println("Escolhar uma opção entre [1,3]:");
+        System.out.println("Escolha uma opção entre [1,3]:");
 
         switch (scanner.nextLine().trim()) {
             case "1" -> {
                 // Remove o contacto inteiro da lista principal.
                 gestor.removerContacto(indiceEncontrado);
+                guardarAgenda();
                 System.out.println("Contacto removido.");
             }
             case "2" -> {
@@ -263,6 +248,7 @@ public class Menu {
 
                     // A remoção depende do equals de EntradaContacto, ou seja, tipo e valor têm de coincidir.
                     if(contactoEncontrado.removerEntradaContacto(entradaCheck)){
+                        guardarAgenda();
                         System.out.println("Entrada removida com sucesso.");
                     }
                     else{
@@ -280,7 +266,6 @@ public class Menu {
     // Pesquisa contactos a partir de texto introduzido e conduz o processo de remoção.
     // Se houver vários resultados, pede ao utilizador que escolha qual pretende remover.
     private void removerContacto() {
-        // A remoção começa por uma pesquisa por contactos e entradas.
         System.out.println("********************************\n*** Remover contacto:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine().trim();
         if(informacao.isBlank()){
@@ -307,13 +292,11 @@ public class Menu {
             for (int indice : contactosEncontrados){
                 Contacto contacto = gestor.getContacto(indice);
 
-                // Mostra o número real do contacto na agenda e o nome para facilitar a seleção.
                 sb.append(indice + 1)
                   .append(" - ")
                   .append(contacto.getIdentificacao().getNome())
                   .append('\n');
 
-                // Mostra apenas as entradas que coincidem com a pesquisa, para facilitar leitura da listagem.
                 for (EntradaContacto entrada : contacto.getEntradas()){
                     if (entrada.procurarEntradaParcial(informacao)){
                         sb.append(entrada).append('\n');
@@ -336,8 +319,6 @@ public class Menu {
                 return;
             }
 
-            // Só aceita contactos que estavam nos resultados da pesquisa.
-            // Sai em caso de introdução de 0 pelo utilizador: indice = -1
             if (indiceSelecionado == -1 || !contactosEncontrados.contains(indiceSelecionado)) {
                 return;
             }
@@ -349,7 +330,6 @@ public class Menu {
     // Procura contactos pela informação introduzida pelo utilizador.
     // Mostra os resultados e permite guardá-los num ficheiro de pesquisa.
     private void encontrarContactos(){
-        // Pesquisa a palavra introduzida na identificação e nas entradas dos contactos.
         System.out.println("********************************\n*** Encontrar Contactos:\nIndique qual a informação a pesquisar nos contactos:");
         String informacao = scanner.nextLine().trim();
         if (informacao.isBlank()) {
@@ -380,25 +360,19 @@ public class Menu {
 
     // Mostra as estatísticas calculadas pelo gestor de contactos.
     private void mostrarEstatisticas() {
-        // Recebe valor das estatística do gestor de contactos.
         HashMap<TipoContacto, Integer> contagem = gestor.estatisticas();
-        // Formata e imprime a estatísticas.
         StringBuilder sb = new StringBuilder();
         sb.append("********************************\n");
         sb.append("*** Estatísticas:");
-        sb.append(String.format(
-                "\nTelemóvel: %d\nTelefone: %d\nMail: %d",
-                contagem.getOrDefault(TipoContacto.TELEMOVEL, 0),
-                contagem.getOrDefault(TipoContacto.TELEFONE, 0),
-                contagem.getOrDefault(TipoContacto.MAIL, 0)
-        ));
+        for (TipoContacto tipo : TipoContacto.values()) {
+            sb.append('\n').append(tipo).append(": ").append(contagem.getOrDefault(tipo, 0));
+        }
         System.out.println(sb);
     }
 
     // Pergunta ao utilizador se pretende guardar uma listagem em ficheiro.
     // O nome do ficheiro é escolhido manualmente pelo utilizador.
     private void perguntarEscreverFicheiro(String conteudo) {
-        // Usado na opção Listar Contactos: o utilizador escolhe o nome do ficheiro.
         System.out.println("Escrever em Ficheiro (S/N)?");
         if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
             System.out.println("Indique o nome do ficheiro:");
@@ -410,9 +384,8 @@ public class Menu {
     }
 
     // Pergunta ao utilizador se pretende guardar os resultados de uma pesquisa.
-    // O nome do ficheiro é gerado automaticamente para evitar substituições.
+    // O nome do ficheiro é gerado automaticamente para evitar substituir pesquisas anteriores.
     private void perguntarEscreverPesquisa(String conteudo) {
-        // Usado na opção Encontrar Contactos: o nome é automático para evitar substituir pesquisas anteriores.
         System.out.println("Escrever em Ficheiro (S/N)?");
         if (scanner.nextLine().trim().equalsIgnoreCase("s")) {
             String nome = GestorFicheiros.proximoNomePesquisa();

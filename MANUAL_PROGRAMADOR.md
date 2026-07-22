@@ -12,8 +12,9 @@
 Aplicação **Java Consola** para gestão de uma agenda de contactos. Permite
 listar, acrescentar (garantindo a unicidade da informação), remover (total ou
 parcialmente), encontrar e produzir estatísticas. A informação é **lida de um
-ficheiro no arranque** e **gravada antes de o programa terminar**, garantindo que
-cada utilização trabalha com a informação mais atual.
+ficheiro no arranque** e **gravada imediatamente após cada alteração** (e também
+ao sair), garantindo que nenhuma alteração se perde mesmo que o programa termine
+de forma inesperada.
 
 Dois tipos de contactos:
 
@@ -23,18 +24,14 @@ Dois tipos de contactos:
 A distinção é feita pela `Identificacao`: empresa vazia indica contacto pessoal;
 empresa preenchida indica contacto profissional.
 
-## 2. Compilar e executar
+O projeto está organizado como um **projeto NetBeans** (Apache NetBeans): pode ser
+aberto diretamente no IDE e executado a partir da classe principal `TrabFinal`. A
+informação é guardada no ficheiro **`contactos.txt`** (definido em
+`TrabFinal.FICHEIRO_DADOS`), criado na pasta de execução do projeto.
 
-```bash
-javac -encoding UTF-8 -d out src/trabfinal/*.java
-java -cp out trabfinal.TrabFinal
-```
+## 2. Arquitetura e relações entre classes
 
-O programa cria/atualiza o ficheiro de dados **`contactos.txt`** na pasta onde é
-executado (definido em `TrabFinal.FICHEIRO_DADOS`).
-
-## 3. Arquitetura e relações entre classes
-<img width="1486" height="783" alt="image" src="https://github.com/user-attachments/assets/8998b302-836d-4520-8fe8-df3afb705892" />
+![Diagrama de Classes](diagrama-classes.png)
 
 **Separação de responsabilidades (camadas):**
 
@@ -48,22 +45,23 @@ As classes do modelo **não conhecem** `Scanner` nem `System.out`, e a manipula�
 de ficheiros está toda em `GestorFicheiros`. Assim é possível trocar a interface
 (ex.: GUI) ou o formato do ficheiro sem alterar o modelo.
 
-## 4. Classes
+## 3. Classes
 
-### 4.1 `TrabFinal` (principal)
-Carrega a agenda, arranca o `Menu`, que no fim grava a informação.
+### 3.1 `TrabFinal` (principal)
+Carrega a agenda e arranca o `Menu`, que grava a informação após cada alteração.
 - **Atributos:** `FICHEIRO_DADOS: String` (estático).
 - **Métodos:** `main(String[]): void`.
 
-### 4.2 `Menu`
+### 3.2 `Menu`
 Toda a interação com o utilizador.
-- **Atributos:** `gestor: GestorContactos`, `scanner: Scanner`, `ficheiroDados: String`, `runNumber: int`.
+- **Atributos:** `gestor: GestorContactos`, `scanner: Scanner`, `ficheiroDados: String`.
 - **Métodos principais:** `menuInicial(): void` (ciclo), `mostrarListaContactos()`,
   `acrescentarContacto()`, `removerContacto()`, `encontrarContactos()`,
   `mostrarEstatisticas()`. Apoio: `carregarContactos()` (lê do ficheiro no arranque),
+  `guardarAgenda()` (grava após cada alteração),
   `perguntarEscreverFicheiro(String)` (exporta listagem), `lerTipoContacto()`.
 
-### 4.3 `GestorContactos`
+### 3.3 `GestorContactos`
 Lógica de negócio sobre a lista de contactos.
 - **Atributos:** `listaContactos: ArrayList<Contacto>`.
 - **Métodos principais:**
@@ -71,24 +69,26 @@ Lógica de negócio sobre a lista de contactos.
   - `encontrarInformacao(String): ArrayList<Integer>`: índices dos contactos que satisfazem o critério.
   - `encontrarContactosRepetidos(Contacto): Contacto`: deteta identificação duplicada.
   - `encontrarInformacaoRepetidaContactos(Contacto): ArrayList<Contacto>`: deteta informação repetida.
-  - `estatisticas(): String`: contagem por tipo (usa `HashMap<TipoContacto,Integer>`).
+  - `estatisticas(): HashMap<TipoContacto,Integer>`: contagem de entradas por tipo.
 
-### 4.4 `GestorFicheiros` (manipulação de ficheiros)
+### 3.4 `GestorFicheiros` (manipulação de ficheiros)
 Classe utilitária (só métodos `static`).
 - **Métodos principais:**
   - `carregar(String): ArrayList<Contacto>`: lê o ficheiro de dados (lista vazia se não existir).
   - `guardar(ArrayList<Contacto>, String): boolean`: grava toda a agenda.
   - `exportarTexto(String, String): boolean`: grava uma listagem num ficheiro de texto à escolha.
+- **Escrita:** `PrintWriter` → `BufferedWriter` → `FileWriter`; **leitura:**
+  `BufferedReader` → `FileReader` (`readLine()`), com o charset por omissão da
+  plataforma nos dois sentidos, para leitura e escrita ficarem sempre coerentes.
 
-**Formato do ficheiro de dados** (uma linha por registo, campos separados por TAB,
-codificação **UTF-8**):
+**Formato do ficheiro de dados** (uma linha por registo, campos separados por TAB):
 
 ```
 C<TAB>nome<TAB>empresa      (início de um contacto)
 E<TAB>TIPO<TAB>valor        (entrada; TIPO = TELEFONE|TELEMOVEL|MAIL)
 ```
 
-### 4.5 `Contacto`
+### 3.5 `Contacto`
 Uma `Identificacao` e a lista das suas `EntradaContacto`.
 - **Atributos:** `identificacao: Identificacao`, `entradas: ArrayList<EntradaContacto>`.
 - **Métodos principais:** `addEntradaContacto(EntradaContacto)`,
@@ -96,21 +96,21 @@ Uma `Identificacao` e a lista das suas `EntradaContacto`.
   `temAlgumaInformacaoIgual(Contacto): boolean`, `acrescentarInformacao(Contacto)`,
   `procurarInformacaoParcial(String): ArrayList<EntradaContacto>`.
 
-### 4.6 `Identificacao`
+### 3.6 `Identificacao`
 - **Atributos:** `nome: String`, `empresa: String` (ambos `final`; `nome` validado não-vazio).
 - **Métodos principais:** `getNome()`, `getEmpresa()`,
   `procurarIdentificacaoParcial(String): boolean`, `equals()`/`hashCode()`.
 
-### 4.7 `EntradaContacto`
+### 3.7 `EntradaContacto`
 - **Atributos:** `tipo: TipoContacto`, `valor: String` (validados no construtor).
 - **Métodos principais:** `getTipo()`, `getValor()`, `temMesmoValor(EntradaContacto): boolean`,
   `procurarEntradaParcial(String): boolean`, `equals()`/`hashCode()`.
 
-### 4.8 `TipoContacto` (enum)
+### 3.8 `TipoContacto` (enum)
 Valores: `TELEFONE`, `TELEMOVEL`, `MAIL`.
 - **Métodos:** `fromInt(int): TipoContacto` (opção 1..3 para o tipo), `toString()` (apresentação com acentos).
 
-## 5. Regras de unicidade (Acrescentar)
+## 4. Regras de unicidade (Acrescentar)
 
 1. **Identificação igual** (nome+empresa) a um existente: acrescentar a info ao
    existente, ou desistir.
@@ -120,7 +120,7 @@ Valores: `TELEFONE`, `TELEMOVEL`, `MAIL`.
 
 Dentro do mesmo contacto, `temInformacao`/`acrescentarInformacao` evitam valores repetidos.
 
-## 6. Como estender
+## 5. Como estender
 
 - **Novo tipo de contacto** (ex.: `FAX`): acrescentar ao enum `TipoContacto` e
   tratar em `fromInt()`/`toString()`. Estatísticas e persistência adaptam-se.
